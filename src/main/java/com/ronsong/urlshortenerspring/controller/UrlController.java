@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.URI;
+
 /**
  * @author ronsong
  */
@@ -18,11 +20,11 @@ public class UrlController {
 
     @GetMapping("/all")
     public ResponseEntity<Object> findAll() {
-        return new ResponseEntity<>(urlService.findAll(), HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).body(urlService.findAll());
     }
 
     @GetMapping("/{shortUrl}")
     public ResponseEntity<Object> findByShortKey(@PathVariable("shortUrl") String shortUrl) {
-        return new ResponseEntity<>(urlService.findByShortKey(shortUrl), HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.MOVED_PERMANENTLY).location(URI.create(urlService.findByShortKey(shortUrl).getLongUrl())).build();
     }
 }
