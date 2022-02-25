@@ -19,4 +19,9 @@ public class UrlServiceImpl implements UrlService {
     public Collection<Url> findAll() {
         return urlRepository.findAll();
     }
+
+    @Override
+    public Url findByShortKey(String shortKey) {
+        return urlRepository.findByShortKey(shortKey);
+    }
 }

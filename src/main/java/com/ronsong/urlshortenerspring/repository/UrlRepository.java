@@ -9,4 +9,11 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface UrlRepository extends MongoRepository<Url, String> {
+    /**
+     * find by shortKey
+     *
+     * @param shortKey the short key
+     * @return the url
+     */
+    Url findByShortKey(String shortKey);
 }

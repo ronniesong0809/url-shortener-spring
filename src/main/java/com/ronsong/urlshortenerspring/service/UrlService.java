@@ -10,7 +10,16 @@ import java.util.Collection;
 public interface UrlService {
     /**
      * find all urls
+     *
      * @return all urls
      */
     Collection<Url> findAll();
+
+    /**
+     * find by shortKey
+     *
+     * @param shortKey short key
+     * @return url
+     */
+    Url findByShortKey(String shortKey);
 }
