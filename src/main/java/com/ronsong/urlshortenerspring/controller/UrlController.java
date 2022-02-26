@@ -3,6 +3,8 @@ package com.ronsong.urlshortenerspring.controller;
 import com.ronsong.urlshortenerspring.model.ShortenDTO;
 import com.ronsong.urlshortenerspring.model.Url;
 import com.ronsong.urlshortenerspring.service.UrlService;
+import lombok.extern.java.Log;
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +34,14 @@ public class UrlController {
 
     @PostMapping("/shorten")
     public ResponseEntity<Object> shorten(@Validated @RequestBody ShortenDTO dto) {
-        Url url = urlService.shorten(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("url", url.getShortUrl()));
+        Url url = urlService.findByLongUrl(dto);
+        HttpStatus httpStatus = HttpStatus.OK;
+
+        if (url == null) {
+            url = urlService.shorten(dto);
+            httpStatus = HttpStatus.CREATED;
+        }
+
+        return ResponseEntity.status(httpStatus).body(Map.of("url", url.getShortUrl()));
     }
 }

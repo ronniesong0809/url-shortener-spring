@@ -47,4 +47,9 @@ public class UrlServiceImpl implements UrlService {
         urlRepository.save(url);
         return url;
     }
+
+    @Override
+    public Url findByLongUrl(ShortenDTO dto) {
+        return urlRepository.findByLongUrl(dto.getLongUrl());
+    }
 }

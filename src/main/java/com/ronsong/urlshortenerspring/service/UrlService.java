@@ -31,4 +31,12 @@ public interface UrlService {
      * @return url
      */
     Url shorten(ShortenDTO dto);
+
+
+    /**
+     * find by longUrl
+     * @param dto Long url
+     * @return url
+     */
+    Url findByLongUrl(ShortenDTO dto);
 }

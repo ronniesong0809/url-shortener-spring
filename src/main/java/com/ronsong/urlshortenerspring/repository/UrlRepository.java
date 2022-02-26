@@ -16,4 +16,12 @@ public interface UrlRepository extends MongoRepository<Url, String> {
      * @return the url
      */
     Url findByShortKey(String shortKey);
+
+    /**
+     * find by longUrl
+     *
+     * @param LongUrl the long url
+     * @return the url
+     */
+    Url findByLongUrl(String LongUrl);
 }
