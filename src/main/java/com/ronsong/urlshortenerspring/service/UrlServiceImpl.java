@@ -4,6 +4,7 @@ import com.ronsong.urlshortenerspring.model.ShortenDTO;
 import com.ronsong.urlshortenerspring.model.Url;
 import com.ronsong.urlshortenerspring.repository.UrlRepository;
 import com.ronsong.urlshortenerspring.utils.Md5Utils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import java.util.Date;
 /**
  * @author ronsong
  */
+@Slf4j
 @Service
 public class UrlServiceImpl implements UrlService {
     @Autowired

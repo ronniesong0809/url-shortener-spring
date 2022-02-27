@@ -3,11 +3,10 @@ package com.ronsong.urlshortenerspring.controller;
 import com.ronsong.urlshortenerspring.model.ShortenDTO;
 import com.ronsong.urlshortenerspring.model.Url;
 import com.ronsong.urlshortenerspring.service.UrlService;
-import lombok.extern.java.Log;
-import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.ObjectUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,13 +34,11 @@ public class UrlController {
     @PostMapping("/shorten")
     public ResponseEntity<Object> shorten(@Validated @RequestBody ShortenDTO dto) {
         Url url = urlService.findByLongUrl(dto);
-        HttpStatus httpStatus = HttpStatus.OK;
 
-        if (url == null) {
-            url = urlService.shorten(dto);
-            httpStatus = HttpStatus.CREATED;
+        if (ObjectUtils.isEmpty(url)) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("url", urlService.shorten(dto).getShortUrl(), "message", "Shortened successfully"));
         }
-
-        return ResponseEntity.status(httpStatus).body(Map.of("url", url.getShortUrl()));
+        
+        return ResponseEntity.status(HttpStatus.OK).body(Map.of("url", url.getShortUrl(), "message", "url already exists"));
     }
 }
