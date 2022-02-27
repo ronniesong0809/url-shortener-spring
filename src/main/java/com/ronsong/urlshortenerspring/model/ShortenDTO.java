@@ -10,7 +10,7 @@ import org.hibernate.validator.constraints.URL;
 @Data
 public class ShortenDTO {
     @URL
-    private String longUrl;
+    private String url;
 
     @Range(min = 0, max = 30, message = "Must be in range (0, 30)")
     private Integer expiration;

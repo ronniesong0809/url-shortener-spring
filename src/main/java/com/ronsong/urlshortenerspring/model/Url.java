@@ -2,7 +2,7 @@ package com.ronsong.urlshortenerspring.model;
 
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
@@ -14,11 +14,12 @@ import java.util.Date;
 @Builder
 @Document(collection = "url")
 public class Url {
-    @Indexed(unique = true)
+    @Id
+    private String id;
     private String shortKey;
     private String shortUrl;
     private String longUrl;
-    private int exception;
+    private Integer expiration;
     private Date createdAt;
     private Date updatedAt;
 }

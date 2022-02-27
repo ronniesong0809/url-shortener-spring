@@ -34,9 +34,26 @@ public interface UrlService {
 
 
     /**
+     * find if exists by long url
+     *
+     * @param dto Shorten data transfer object
+     * @return true if exists
+     */
+    Boolean exists(ShortenDTO dto);
+
+    /**
      * find by longUrl
-     * @param dto Long url
+     *
+     * @param dto Shorten data transfer object
      * @return url
      */
     Url findByLongUrl(ShortenDTO dto);
+
+    /**
+     * update url
+     *
+     * @param dto Shorten data transfer object
+     * @return url
+     */
+    Url update(ShortenDTO dto);
 }

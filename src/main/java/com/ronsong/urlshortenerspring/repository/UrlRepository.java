@@ -18,10 +18,18 @@ public interface UrlRepository extends MongoRepository<Url, String> {
     Url findByShortKey(String shortKey);
 
     /**
+     * find if exists by long url
+     *
+     * @param longUrl the long url
+     * @return true if exists
+     */
+    Boolean existsByLongUrl(String longUrl);
+
+    /**
      * find by longUrl
      *
-     * @param LongUrl the long url
+     * @param longUrl the long url
      * @return the url
      */
-    Url findByLongUrl(String LongUrl);
+    Url findByLongUrl(String longUrl);
 }
