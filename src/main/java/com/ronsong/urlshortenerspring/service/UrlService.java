@@ -25,6 +25,14 @@ public interface UrlService {
     Url findByShortKey(String shortKey);
 
     /**
+     * find by longUrl
+     *
+     * @param dto Shorten data transfer object
+     * @return url
+     */
+    Url findByLongUrl(ShortenDTO dto);
+
+    /**
      * save url
      *
      * @param dto Shorten data transfer object
@@ -40,14 +48,6 @@ public interface UrlService {
      * @return true if exists
      */
     Boolean exists(ShortenDTO dto);
-
-    /**
-     * find by longUrl
-     *
-     * @param dto Shorten data transfer object
-     * @return url
-     */
-    Url findByLongUrl(ShortenDTO dto);
 
     /**
      * update url

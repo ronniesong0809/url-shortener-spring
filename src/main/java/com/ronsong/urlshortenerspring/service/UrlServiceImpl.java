@@ -37,6 +37,11 @@ public class UrlServiceImpl implements UrlService {
     }
 
     @Override
+    public Url findByLongUrl(ShortenDTO dto) {
+        return urlRepository.findByLongUrl(dto.getUrl());
+    }
+
+    @Override
     public Url shorten(ShortenDTO dto) {
         String shortKey = Md5Utils.get62Hex(Md5Utils.getHashCode(dto.getUrl()));
 
@@ -55,11 +60,6 @@ public class UrlServiceImpl implements UrlService {
     @Override
     public Boolean exists(ShortenDTO dto) {
         return urlRepository.existsByLongUrl(dto.getUrl());
-    }
-
-    @Override
-    public Url findByLongUrl(ShortenDTO dto) {
-        return urlRepository.findByLongUrl(dto.getUrl());
     }
 
     @Override

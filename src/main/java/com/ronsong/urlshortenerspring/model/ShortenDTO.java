@@ -1,5 +1,6 @@
 package com.ronsong.urlshortenerspring.model;
 
+import lombok.Builder;
 import lombok.Data;
 import org.hibernate.validator.constraints.Range;
 import org.hibernate.validator.constraints.URL;
@@ -8,6 +9,7 @@ import org.hibernate.validator.constraints.URL;
  * @author ronsong
  */
 @Data
+@Builder
 public class ShortenDTO {
     @URL
     private String url;
