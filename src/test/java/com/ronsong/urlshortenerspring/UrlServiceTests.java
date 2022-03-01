@@ -4,7 +4,7 @@ import com.ronsong.urlshortenerspring.model.ShortenDTO;
 import com.ronsong.urlshortenerspring.model.Url;
 import com.ronsong.urlshortenerspring.repository.UrlRepository;
 import com.ronsong.urlshortenerspring.service.UrlService;
-import com.ronsong.urlshortenerspring.utils.Md5Utils;
+import com.ronsong.urlshortenerspring.utils.EncodeUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,7 +45,7 @@ public class UrlServiceTests {
                 .expiration(0)
                 .build();
 
-        String shortKey = Md5Utils.get62Hex(Md5Utils.getHashCode("https://github.com/ronniesong0809"));
+        String shortKey = EncodeUtils.get62Hex(EncodeUtils.getHashCode("https://github.com/ronniesong0809"));
 
         url = Url.builder()
                 .longUrl("https://github.com/ronniesong0809")

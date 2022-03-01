@@ -3,7 +3,7 @@ package com.ronsong.urlshortenerspring;
 import com.ronsong.urlshortenerspring.model.ShortenDTO;
 import com.ronsong.urlshortenerspring.model.Url;
 import com.ronsong.urlshortenerspring.service.UrlService;
-import com.ronsong.urlshortenerspring.utils.Md5Utils;
+import com.ronsong.urlshortenerspring.utils.EncodeUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,16 +34,19 @@ public class UrlControllerTests {
     @MockBean
     private UrlService urlService;
 
+    private ShortenDTO dto;
+    private Url url;
+
     @Before
     public void setUp() {
-        ShortenDTO dto = ShortenDTO.builder()
+        dto = ShortenDTO.builder()
                 .url("https://github.com/ronniesong0809")
                 .expiration(0)
                 .build();
 
-        String shortKey = Md5Utils.get62Hex(Md5Utils.getHashCode("https://github.com/ronniesong0809"));
+        String shortKey = EncodeUtils.get62Hex(EncodeUtils.getHashCode("https://github.com/ronniesong0809"));
 
-        Url url = Url.builder()
+        url = Url.builder()
                 .longUrl("https://github.com/ronniesong0809")
                 .shortKey(shortKey)
                 .shortUrl(baseUrl + '/' + shortKey)
@@ -79,5 +82,18 @@ public class UrlControllerTests {
                         .param("url", "https://github.com/ronniesong0809")
                         .param("expiration", "0"))
                 .andExpect(status().isCreated());
+    }
+
+    @Test
+    public void testPostShortenShouldReturnIsOk() throws Exception {
+        testPostShortenShouldReturnIsCreated();
+        given(urlService.exists(dto)).willReturn(true);
+        given(urlService.update(dto)).willReturn(url);
+
+        mvc.perform(post("/shorten")
+                        .contentType("application/x-www-form-urlencoded")
+                        .param("url", "https://github.com/ronniesong0809")
+                        .param("expiration", "0"))
+                .andExpect(status().isOk());
     }
 }

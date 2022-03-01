@@ -3,7 +3,7 @@ package com.ronsong.urlshortenerspring.service;
 import com.ronsong.urlshortenerspring.model.ShortenDTO;
 import com.ronsong.urlshortenerspring.model.Url;
 import com.ronsong.urlshortenerspring.repository.UrlRepository;
-import com.ronsong.urlshortenerspring.utils.Md5Utils;
+import com.ronsong.urlshortenerspring.utils.EncodeUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -43,7 +43,7 @@ public class UrlServiceImpl implements UrlService {
 
     @Override
     public Url shorten(ShortenDTO dto) {
-        String shortKey = Md5Utils.get62Hex(Md5Utils.getHashCode(dto.getUrl()));
+        String shortKey = EncodeUtils.encode(dto.getUrl());
 
         Url url = Url.builder()
                 .longUrl(dto.getUrl())

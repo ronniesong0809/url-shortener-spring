@@ -1,13 +1,17 @@
 package com.ronsong.urlshortenerspring.utils;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.experimental.UtilityClass;
 
 /**
+ * utility class for encoding
+ *
  * @author RonSong
  */
-@Slf4j
-public class Md5Utils {
-    private static final String STR = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+@UtilityClass
+public class EncodeUtils {
+    public static String encode(String longUrl) {
+        return get62Hex(getHashCode(longUrl));
+    }
 
     public static long getHashCode(String longUrl) {
         long hash = 0;
@@ -19,20 +23,13 @@ public class Md5Utils {
     }
 
     public static String get62Hex(long hash) {
+        String str = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
         hash = Math.abs(hash);
         StringBuilder sb = new StringBuilder();
         while (hash > 0) {
-            sb.insert(0, STR.charAt((int) (hash % 62)));
+            sb.insert(0, str.charAt((int) (hash % 62)));
             hash /= 62;
         }
         return sb.toString();
-    }
-
-    public static void main(String[] args) {
-        String url = "https://github.com/ronniesong0809";
-        long hash = Md5Utils.getHashCode(url);
-        String hex = Md5Utils.get62Hex(hash);
-        log.info("url: [{}] -> hash: [{}]", url, hash);
-        log.info("hash: [{}] -> hex: [{}]", hash, hex);
     }
 }
