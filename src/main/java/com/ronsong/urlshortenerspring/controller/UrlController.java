@@ -4,12 +4,13 @@ import com.ronsong.urlshortenerspring.model.ShortenDTO;
 import com.ronsong.urlshortenerspring.model.UpdateDTO;
 import com.ronsong.urlshortenerspring.service.UrlService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
@@ -28,10 +29,13 @@ public class UrlController {
     }
 
     @GetMapping("/{shortKey}")
-    public ResponseEntity<Object> findByShortKey(@PathVariable("shortKey") String shortKey) {
+    public ResponseEntity<Object> findByShortKey(@PathVariable("shortKey") String shortKey, HttpServletRequest request) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Location", urlService.findByShortKey(shortKey).getLongUrl());
+
         return ResponseEntity
-                .status(HttpStatus.MOVED_PERMANENTLY)
-                .location(URI.create(urlService.findByShortKey(shortKey).getLongUrl()))
+                .status(HttpStatus.FOUND)
+                .headers(headers)
                 .build();
     }
 

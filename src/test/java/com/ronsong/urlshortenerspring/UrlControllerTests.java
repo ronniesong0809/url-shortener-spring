@@ -84,7 +84,7 @@ public class UrlControllerTests {
     public void testGetByShortKeyShouldReturnIsMovedPermanently() throws Exception {
         mvc.perform(get("/4mDmZ")
                         .contentType("application/json"))
-                .andExpect(status().isMovedPermanently());
+                .andExpect(status().isFound());
     }
 
     @Test
