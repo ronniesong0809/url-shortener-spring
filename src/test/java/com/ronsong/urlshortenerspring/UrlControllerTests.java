@@ -1,6 +1,7 @@
 package com.ronsong.urlshortenerspring;
 
 import com.ronsong.urlshortenerspring.model.ShortenDTO;
+import com.ronsong.urlshortenerspring.model.UpdateDTO;
 import com.ronsong.urlshortenerspring.model.Url;
 import com.ronsong.urlshortenerspring.service.UrlService;
 import com.ronsong.urlshortenerspring.utils.EncodeUtils;
@@ -18,8 +19,7 @@ import java.util.Date;
 import java.util.List;
 
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -34,14 +34,19 @@ public class UrlControllerTests {
     @MockBean
     private UrlService urlService;
 
-    private ShortenDTO dto;
+    private ShortenDTO shortenDto;
+    private UpdateDTO updateDto;
     private Url url;
 
     @Before
     public void setUp() {
-        dto = ShortenDTO.builder()
+        shortenDto = ShortenDTO.builder()
                 .url("https://github.com/ronniesong0809")
                 .expiration(0)
+                .build();
+
+        updateDto = UpdateDTO.builder()
+                .expiration(1)
                 .build();
 
         String shortKey = EncodeUtils.get62Hex(EncodeUtils.getHashCode("https://github.com/ronniesong0809"));
@@ -56,7 +61,7 @@ public class UrlControllerTests {
                 .build();
         List<Url> urls = List.of(url);
 
-        given(urlService.shorten(dto)).willReturn(url);
+        given(urlService.shorten(shortenDto)).willReturn(url);
         given(urlService.findAll()).willReturn(urls);
         given(urlService.findByShortKey("4mDmZ")).willReturn(url);
     }
@@ -86,14 +91,23 @@ public class UrlControllerTests {
 
     @Test
     public void testPostShortenShouldReturnIsOk() throws Exception {
-        testPostShortenShouldReturnIsCreated();
-        given(urlService.exists(dto)).willReturn(true);
-        given(urlService.update(dto)).willReturn(url);
+        given(urlService.exists(shortenDto)).willReturn(true);
+        given(urlService.updateByLongUrl(shortenDto)).willReturn(url);
 
         mvc.perform(post("/shorten")
                         .contentType("application/x-www-form-urlencoded")
                         .param("url", "https://github.com/ronniesong0809")
                         .param("expiration", "0"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testPutShortenShouldReturnIsOk() throws Exception {
+        given(urlService.updateByShortKey("4mDmZ", updateDto)).willReturn(url);
+
+        mvc.perform(put("/4mDmZ")
+                        .contentType("application/x-www-form-urlencoded")
+                        .param("expiration", "1"))
                 .andExpect(status().isOk());
     }
 }

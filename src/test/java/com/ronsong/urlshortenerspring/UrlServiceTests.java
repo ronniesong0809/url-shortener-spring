@@ -1,6 +1,7 @@
 package com.ronsong.urlshortenerspring;
 
 import com.ronsong.urlshortenerspring.model.ShortenDTO;
+import com.ronsong.urlshortenerspring.model.UpdateDTO;
 import com.ronsong.urlshortenerspring.model.Url;
 import com.ronsong.urlshortenerspring.repository.UrlRepository;
 import com.ronsong.urlshortenerspring.service.UrlService;
@@ -36,13 +37,18 @@ public class UrlServiceTests {
 
     private List<Url> urls;
     private Url url;
-    private ShortenDTO dto;
+    private ShortenDTO shortenDto;
+    private UpdateDTO updateDto;
 
     @Before
     public void setUp() {
-        dto = ShortenDTO.builder()
+        shortenDto = ShortenDTO.builder()
                 .url("https://github.com/ronniesong0809")
                 .expiration(0)
+                .build();
+
+        updateDto = UpdateDTO.builder()
+                .expiration(1)
                 .build();
 
         String shortKey = EncodeUtils.get62Hex(EncodeUtils.getHashCode("https://github.com/ronniesong0809"));
@@ -89,7 +95,7 @@ public class UrlServiceTests {
 
     @Test
     public void testFindByLongUrlShouldReturnUrl() {
-        Url found = urlService.findByLongUrl(dto);
+        Url found = urlService.findByLongUrl(shortenDto.getUrl());
 
         assertNotNull(found);
         assertEquals(url, found);
@@ -97,7 +103,7 @@ public class UrlServiceTests {
 
     @Test
     public void testShortenShouldReturnUrl() {
-        Url shortened = urlService.shorten(dto);
+        Url shortened = urlService.shorten(shortenDto);
 
         assertNotNull(shortened);
         assertEquals(url.getShortKey(), shortened.getShortKey());
@@ -105,7 +111,7 @@ public class UrlServiceTests {
 
     @Test
     public void testExistsShouldReturnTrue() {
-        Boolean existed = urlService.exists(dto);
+        Boolean existed = urlService.exists(shortenDto);
 
         assertTrue(existed);
     }
@@ -114,8 +120,18 @@ public class UrlServiceTests {
     @Test
     public void testUpdateShouldReturnUpdatedUrl() {
         testFindByLongUrlShouldReturnUrl();
-        dto.setExpiration(7);
-        Url updated = urlService.update(dto);
+        shortenDto.setExpiration(7);
+        Url updated = urlService.updateByLongUrl(shortenDto);
+
+        assertNotNull(updated);
+        assertEquals(url, updated);
+    }
+
+    @Test
+    public void testUpdateByShortKeyShouldReturnUpdatedUrl() {
+        testFindByLongUrlShouldReturnUrl();
+        updateDto.setExpiration(7);
+        Url updated = urlService.updateByShortKey("4mDmZ", updateDto);
 
         assertNotNull(updated);
         assertEquals(url, updated);

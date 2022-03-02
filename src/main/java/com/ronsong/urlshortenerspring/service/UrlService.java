@@ -1,6 +1,7 @@
 package com.ronsong.urlshortenerspring.service;
 
 import com.ronsong.urlshortenerspring.model.ShortenDTO;
+import com.ronsong.urlshortenerspring.model.UpdateDTO;
 import com.ronsong.urlshortenerspring.model.Url;
 
 import java.util.Collection;
@@ -27,10 +28,10 @@ public interface UrlService {
     /**
      * find by longUrl
      *
-     * @param dto Shorten data transfer object
+     * @param longUrl long url
      * @return url
      */
-    Url findByLongUrl(ShortenDTO dto);
+    Url findByLongUrl(String longUrl);
 
     /**
      * save url
@@ -55,5 +56,14 @@ public interface UrlService {
      * @param dto Shorten data transfer object
      * @return url
      */
-    Url update(ShortenDTO dto);
+    Url updateByLongUrl(ShortenDTO dto);
+
+    /**
+     * update url
+     *
+     * @param shortKey short url
+     * @param dto      horten data transfer object
+     * @return url
+     */
+    Url updateByShortKey(String shortKey, UpdateDTO dto);
 }

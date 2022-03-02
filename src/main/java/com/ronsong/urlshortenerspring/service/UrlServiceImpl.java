@@ -1,6 +1,7 @@
 package com.ronsong.urlshortenerspring.service;
 
 import com.ronsong.urlshortenerspring.model.ShortenDTO;
+import com.ronsong.urlshortenerspring.model.UpdateDTO;
 import com.ronsong.urlshortenerspring.model.Url;
 import com.ronsong.urlshortenerspring.repository.UrlRepository;
 import com.ronsong.urlshortenerspring.utils.EncodeUtils;
@@ -37,8 +38,8 @@ public class UrlServiceImpl implements UrlService {
     }
 
     @Override
-    public Url findByLongUrl(ShortenDTO dto) {
-        return urlRepository.findByLongUrl(dto.getUrl());
+    public Url findByLongUrl(String longUrl) {
+        return urlRepository.findByLongUrl(longUrl);
     }
 
     @Override
@@ -63,8 +64,15 @@ public class UrlServiceImpl implements UrlService {
     }
 
     @Override
-    public Url update(ShortenDTO dto) {
-        Url url = findByLongUrl(dto);
+    public Url updateByLongUrl(ShortenDTO dto) {
+        Url url = findByLongUrl(dto.getUrl());
+        url.setExpiration(dto.getExpiration());
+        return urlRepository.save(url);
+    }
+
+    @Override
+    public Url updateByShortKey(String shortKey, UpdateDTO dto) {
+        Url url = findByShortKey(shortKey);
         url.setExpiration(dto.getExpiration());
         return urlRepository.save(url);
     }
