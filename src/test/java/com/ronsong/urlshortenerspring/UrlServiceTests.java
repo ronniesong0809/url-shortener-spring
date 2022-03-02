@@ -6,6 +6,7 @@ import com.ronsong.urlshortenerspring.model.Url;
 import com.ronsong.urlshortenerspring.repository.UrlRepository;
 import com.ronsong.urlshortenerspring.service.UrlService;
 import com.ronsong.urlshortenerspring.utils.EncodeUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,6 +25,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@Slf4j
 public class UrlServiceTests {
 
     @Value("${BASE_URL}")
@@ -73,6 +75,8 @@ public class UrlServiceTests {
                 .thenReturn(url);
         when(urlRepository.existsByLongUrl("https://github.com/ronniesong0809"))
                 .thenReturn(true);
+        when(urlService.deleteByShortKey("4mDmZ"))
+                .thenReturn(url);
     }
 
     @Test
@@ -132,6 +136,14 @@ public class UrlServiceTests {
         testFindByLongUrlShouldReturnUrl();
         updateDto.setExpiration(7);
         Url updated = urlService.updateByShortKey("4mDmZ", updateDto);
+
+        assertNotNull(updated);
+        assertEquals(url, updated);
+    }
+
+    @Test
+    public void testDeleteByShortKeyShouldReturnUpdatedUrl() {
+        Url updated = urlService.deleteByShortKey("4mDmZ");
 
         assertNotNull(updated);
         assertEquals(url, updated);

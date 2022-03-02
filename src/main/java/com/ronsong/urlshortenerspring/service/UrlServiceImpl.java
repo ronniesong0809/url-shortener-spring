@@ -76,4 +76,9 @@ public class UrlServiceImpl implements UrlService {
         url.setExpiration(dto.getExpiration());
         return urlRepository.save(url);
     }
+
+    @Override
+    public Url deleteByShortKey(String shortKey) {
+        return urlRepository.deleteByShortKey(shortKey);
+    }
 }

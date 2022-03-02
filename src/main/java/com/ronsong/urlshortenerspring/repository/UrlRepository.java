@@ -32,4 +32,13 @@ public interface UrlRepository extends MongoRepository<Url, String> {
      * @return true if exists
      */
     Boolean existsByLongUrl(String longUrl);
+
+
+    /**
+     * delete by short key
+     *
+     * @param shortKey the short key
+     * @return the url
+     */
+    Url deleteByShortKey(String shortKey);
 }

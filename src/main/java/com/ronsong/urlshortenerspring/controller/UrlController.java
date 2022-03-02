@@ -38,13 +38,26 @@ public class UrlController {
     @PostMapping(path = "/shorten", consumes = "application/x-www-form-urlencoded")
     public ResponseEntity<Object> shorten(@Validated ShortenDTO dto) {
         if (Boolean.FALSE.equals(urlService.exists(dto))) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("url", urlService.shorten(dto).getShortUrl(), "message", "Shortened successfully"));
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .body(Map.of("url", urlService.shorten(dto).getShortUrl(), "message", "Shortened successfully"));
         }
-        return ResponseEntity.status(HttpStatus.OK).body(Map.of("url", urlService.updateByLongUrl(dto).getShortUrl(), "message", "Url already exists"));
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(Map.of("url", urlService.updateByLongUrl(dto).getShortUrl(), "message", "Url already exists"));
     }
 
     @PutMapping(path = "/{shortKey}", consumes = "application/x-www-form-urlencoded")
     public ResponseEntity<Object> update(@PathVariable("shortKey") String shortKey, @Validated UpdateDTO dto) {
-        return ResponseEntity.status(HttpStatus.OK).body(Map.of("url", urlService.updateByShortKey(shortKey, dto), "message", "Updated successfully"));
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(Map.of("url", urlService.updateByShortKey(shortKey, dto), "message", "Updated successfully"));
+    }
+
+    @DeleteMapping("/{shortKey}")
+    public ResponseEntity<Object> deleteByShortKey(@PathVariable("shortKey") String shortKey) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(Map.of("url", urlService.deleteByShortKey(shortKey).getLongUrl(), "message", "Deleted successfully"));
     }
 }

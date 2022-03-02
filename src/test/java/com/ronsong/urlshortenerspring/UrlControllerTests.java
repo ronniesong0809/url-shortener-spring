@@ -35,8 +35,6 @@ public class UrlControllerTests {
     private UrlService urlService;
 
     private ShortenDTO shortenDto;
-    private UpdateDTO updateDto;
-    private Url url;
 
     @Before
     public void setUp() {
@@ -45,13 +43,13 @@ public class UrlControllerTests {
                 .expiration(0)
                 .build();
 
-        updateDto = UpdateDTO.builder()
+        UpdateDTO updateDto = UpdateDTO.builder()
                 .expiration(1)
                 .build();
 
         String shortKey = EncodeUtils.get62Hex(EncodeUtils.getHashCode("https://github.com/ronniesong0809"));
 
-        url = Url.builder()
+        Url url = Url.builder()
                 .longUrl("https://github.com/ronniesong0809")
                 .shortKey(shortKey)
                 .shortUrl(baseUrl + '/' + shortKey)
@@ -61,9 +59,18 @@ public class UrlControllerTests {
                 .build();
         List<Url> urls = List.of(url);
 
-        given(urlService.shorten(shortenDto)).willReturn(url);
-        given(urlService.findAll()).willReturn(urls);
-        given(urlService.findByShortKey("4mDmZ")).willReturn(url);
+        given(urlService.shorten(shortenDto))
+                .willReturn(url);
+        given(urlService.findAll())
+                .willReturn(urls);
+        given(urlService.findByShortKey("4mDmZ"))
+                .willReturn(url);
+        given(urlService.updateByLongUrl(shortenDto))
+                .willReturn(url);
+        given(urlService.updateByShortKey("4mDmZ", updateDto))
+                .willReturn(url);
+        given(urlService.deleteByShortKey("4mDmZ"))
+                .willReturn(url);
     }
 
     @Test
@@ -91,8 +98,8 @@ public class UrlControllerTests {
 
     @Test
     public void testPostShortenShouldReturnIsOk() throws Exception {
-        given(urlService.exists(shortenDto)).willReturn(true);
-        given(urlService.updateByLongUrl(shortenDto)).willReturn(url);
+        given(urlService.exists(shortenDto))
+                .willReturn(true);
 
         mvc.perform(post("/shorten")
                         .contentType("application/x-www-form-urlencoded")
@@ -103,11 +110,16 @@ public class UrlControllerTests {
 
     @Test
     public void testPutShortenShouldReturnIsOk() throws Exception {
-        given(urlService.updateByShortKey("4mDmZ", updateDto)).willReturn(url);
-
         mvc.perform(put("/4mDmZ")
                         .contentType("application/x-www-form-urlencoded")
                         .param("expiration", "1"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testDeleteUrlByShortKeyShouldReturnIsOk() throws Exception {
+        mvc.perform(delete("/4mDmZ")
+                        .contentType("application/x-www-form-urlencoded"))
                 .andExpect(status().isOk());
     }
 }

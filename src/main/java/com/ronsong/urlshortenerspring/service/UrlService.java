@@ -66,4 +66,13 @@ public interface UrlService {
      * @return url
      */
     Url updateByShortKey(String shortKey, UpdateDTO dto);
+
+
+    /**
+     * delete url by short key
+     *
+     * @param shortKey short url
+     * @return url
+     */
+    Url deleteByShortKey(String shortKey);
 }
