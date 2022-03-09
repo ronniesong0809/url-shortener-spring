@@ -3,21 +3,26 @@ package com.ronsong.urlshortenerspring;
 import com.ronsong.urlshortenerspring.model.ShortenDTO;
 import com.ronsong.urlshortenerspring.model.UpdateDTO;
 import com.ronsong.urlshortenerspring.model.Url;
+import com.ronsong.urlshortenerspring.service.StatsService;
 import com.ronsong.urlshortenerspring.service.UrlService;
 import com.ronsong.urlshortenerspring.utils.EncodeUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Date;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -25,19 +30,23 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @WebMvcTest
 public class UrlControllerTests {
+    private final MockHttpServletRequest mockRequest = new MockHttpServletRequest();
+
     @Value("${BASE_URL}")
     private String baseUrl;
-
     @Autowired
     private MockMvc mvc;
-
     @MockBean
     private UrlService urlService;
+
+    @MockBean
+    private StatsService statsService;
 
     private ShortenDTO shortenDto;
 
     @Before
     public void setUp() {
+
         shortenDto = ShortenDTO.builder()
                 .url("https://github.com/ronniesong0809")
                 .expiration(0)
@@ -71,6 +80,10 @@ public class UrlControllerTests {
                 .willReturn(url);
         given(urlService.deleteByShortKey("4mDmZ"))
                 .willReturn(url);
+        given(urlService.redirectToLongUrl("4mDmZ", mockRequest))
+                .willReturn(url);
+        Mockito.when(urlService.redirectToLongUrl(eq("4mDmZ"), any()))
+                .thenReturn(url);
     }
 
     @Test
@@ -83,6 +96,7 @@ public class UrlControllerTests {
     @Test
     public void testGetByShortKeyShouldReturnIsMovedPermanently() throws Exception {
         mvc.perform(get("/4mDmZ")
+                        .requestAttr("request", mockRequest)
                         .contentType("application/json"))
                 .andExpect(status().isFound());
     }

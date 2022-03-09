@@ -11,18 +11,22 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
 import java.util.Date;
 
 /**
  * @author ronsong
  */
-@Slf4j
 @Service
+@Slf4j
 @Transactional(rollbackFor = Exception.class)
 public class UrlServiceImpl implements UrlService {
     @Autowired
     UrlRepository urlRepository;
+
+    @Autowired
+    StatsService statsService;
 
     @Value("${BASE_URL}")
     String baseUrl;
@@ -80,5 +84,16 @@ public class UrlServiceImpl implements UrlService {
     @Override
     public Url deleteByShortKey(String shortKey) {
         return urlRepository.deleteByShortKey(shortKey);
+    }
+
+    @Override
+    public Url redirectToLongUrl(String shortKey, HttpServletRequest request) {
+        if (request != null) {
+            statsService.save(shortKey, request);
+        }
+
+        Url url = findByShortKey(shortKey);
+        System.out.print(shortKey + url);
+        return url;
     }
 }

@@ -2,6 +2,7 @@ package com.ronsong.urlshortenerspring.controller;
 
 import com.ronsong.urlshortenerspring.model.ShortenDTO;
 import com.ronsong.urlshortenerspring.model.UpdateDTO;
+import com.ronsong.urlshortenerspring.model.Url;
 import com.ronsong.urlshortenerspring.service.UrlService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -31,7 +32,8 @@ public class UrlController {
     @GetMapping("/{shortKey}")
     public ResponseEntity<Object> findByShortKey(@PathVariable("shortKey") String shortKey, HttpServletRequest request) {
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Location", urlService.findByShortKey(shortKey).getLongUrl());
+        Url url = urlService.redirectToLongUrl(shortKey, request);
+        headers.add("Location", url.getLongUrl());
 
         return ResponseEntity
                 .status(HttpStatus.FOUND)

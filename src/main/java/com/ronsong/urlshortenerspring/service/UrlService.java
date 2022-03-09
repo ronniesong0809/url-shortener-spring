@@ -4,6 +4,7 @@ import com.ronsong.urlshortenerspring.model.ShortenDTO;
 import com.ronsong.urlshortenerspring.model.UpdateDTO;
 import com.ronsong.urlshortenerspring.model.Url;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
 
 /**
@@ -75,4 +76,13 @@ public interface UrlService {
      * @return url
      */
     Url deleteByShortKey(String shortKey);
+
+    /**
+     * redirect to long url
+     *
+     * @param shortKey short url
+     * @param request  http request
+     * @return url
+     */
+    Url redirectToLongUrl(String shortKey, HttpServletRequest request);
 }
