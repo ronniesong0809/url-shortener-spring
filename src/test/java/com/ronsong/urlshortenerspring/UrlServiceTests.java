@@ -6,7 +6,6 @@ import com.ronsong.urlshortenerspring.model.Url;
 import com.ronsong.urlshortenerspring.repository.UrlRepository;
 import com.ronsong.urlshortenerspring.service.UrlService;
 import com.ronsong.urlshortenerspring.utils.EncodeUtils;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,7 +24,6 @@ import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@Slf4j
 public class UrlServiceTests {
 
     @Value("${BASE_URL}")
