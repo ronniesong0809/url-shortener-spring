@@ -29,8 +29,8 @@ public class StatsServiceTests {
     StatsService statsService;
 
     @MockBean
-
     private StatsRepository statsRepository;
+
     private Stats stats;
     private List<Stats> statsList;
 
