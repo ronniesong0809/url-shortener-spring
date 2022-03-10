@@ -87,14 +87,14 @@ public class UrlControllerTests {
     }
 
     @Test
-    public void testGetAllUrlsShouldReturnIsOk() throws Exception {
+    public void test_get_all_urls_should_return_is_ok() throws Exception {
         mvc.perform(get("/all")
                         .contentType("application/json"))
                 .andExpect(status().isOk());
     }
 
     @Test
-    public void testGetByShortKeyShouldReturnIsMovedPermanently() throws Exception {
+    public void test_get_by_short_key_should_return_is_moved_permanently() throws Exception {
         mvc.perform(get("/4mDmZ")
                         .requestAttr("request", mockRequest)
                         .contentType("application/json"))
@@ -102,7 +102,7 @@ public class UrlControllerTests {
     }
 
     @Test
-    public void testPostShortenShouldReturnIsCreated() throws Exception {
+    public void test_post_shorten_should_return_is_created() throws Exception {
         mvc.perform(post("/shorten")
                         .contentType("application/x-www-form-urlencoded")
                         .param("url", "https://github.com/ronniesong0809")
@@ -111,7 +111,7 @@ public class UrlControllerTests {
     }
 
     @Test
-    public void testPostShortenShouldReturnIsOk() throws Exception {
+    public void test_post_shorten_should_return_is_ok() throws Exception {
         given(urlService.exists(shortenDto))
                 .willReturn(true);
 
@@ -123,7 +123,7 @@ public class UrlControllerTests {
     }
 
     @Test
-    public void testPutShortenShouldReturnIsOk() throws Exception {
+    public void test_put_shorten_should_return_is_ok() throws Exception {
         mvc.perform(put("/4mDmZ")
                         .contentType("application/x-www-form-urlencoded")
                         .param("expiration", "1"))
@@ -131,7 +131,7 @@ public class UrlControllerTests {
     }
 
     @Test
-    public void testDeleteUrlByShortKeyShouldReturnIsOk() throws Exception {
+    public void test_delete_url_by_short_key_should_return_is_ok() throws Exception {
         mvc.perform(delete("/4mDmZ")
                         .contentType("application/x-www-form-urlencoded"))
                 .andExpect(status().isOk());

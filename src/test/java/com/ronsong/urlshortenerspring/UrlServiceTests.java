@@ -80,7 +80,7 @@ public class UrlServiceTests {
     }
 
     @Test
-    public void testFindAllShouldReturnAListOfUrl() {
+    public void test_findAll_should_return_a_list_of_url() {
         Collection<Url> foundUrls = urlService.findAll();
 
         assertNotNull(foundUrls);
@@ -89,7 +89,7 @@ public class UrlServiceTests {
     }
 
     @Test
-    public void testFindByShortKeyShouldReturnUrl() {
+    public void test_findByShortKey_key_should_return_url() {
         Url found = urlService.findByShortKey("4mDmZ");
 
         assertNotNull(found);
@@ -98,7 +98,7 @@ public class UrlServiceTests {
 
 
     @Test
-    public void testFindByLongUrlShouldReturnUrl() {
+    public void test_findByLongUrl_should_return_url() {
         Url found = urlService.findByLongUrl(shortenDto.getUrl());
 
         assertNotNull(found);
@@ -106,7 +106,7 @@ public class UrlServiceTests {
     }
 
     @Test
-    public void testShortenShouldReturnUrl() {
+    public void test_shorten_should_return_url() {
         Url shortened = urlService.shorten(shortenDto);
 
         assertNotNull(shortened);
@@ -114,7 +114,7 @@ public class UrlServiceTests {
     }
 
     @Test
-    public void testExistsShouldReturnTrue() {
+    public void test_exists_should_return_true() {
         Boolean existed = urlService.exists(shortenDto);
 
         assertTrue(existed);
@@ -122,8 +122,8 @@ public class UrlServiceTests {
 
 
     @Test
-    public void testUpdateShouldReturnUpdatedUrl() {
-        testFindByLongUrlShouldReturnUrl();
+    public void test_updateByLongUrl_should_return_updated_url() {
+        test_findByLongUrl_should_return_url();
         shortenDto.setExpiration(7);
         Url updated = urlService.updateByLongUrl(shortenDto);
 
@@ -132,8 +132,8 @@ public class UrlServiceTests {
     }
 
     @Test
-    public void testUpdateByShortKeyShouldReturnUpdatedUrl() {
-        testFindByLongUrlShouldReturnUrl();
+    public void test_updateByShortKey_should_return_updated_url() {
+        test_findByLongUrl_should_return_url();
         updateDto.setExpiration(7);
         Url updated = urlService.updateByShortKey("4mDmZ", updateDto);
 
@@ -142,7 +142,7 @@ public class UrlServiceTests {
     }
 
     @Test
-    public void testDeleteByShortKeyShouldReturnUpdatedUrl() {
+    public void test_deleteByShortKey_should_return_updated_url() {
         Url updated = urlService.deleteByShortKey("4mDmZ");
 
         assertNotNull(updated);
